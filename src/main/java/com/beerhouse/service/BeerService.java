@@ -8,6 +8,4 @@ import com.beerhouse.repository.BeerRepository;
 public class BeerService {
 
 	private BeerRepository beerRepository;
-	
-	
 }
