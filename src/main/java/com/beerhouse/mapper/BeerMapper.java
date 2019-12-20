@@ -1,4 +1,4 @@
-package com.beerhouse.adapter;
+package com.beerhouse.mapper;
 
 import org.springframework.stereotype.Service;
 
@@ -6,9 +6,9 @@ import com.beerhouse.dto.BeerDTO;
 import com.beerhouse.model.Beer;
 
 @Service
-public class BeerAdapter {
+public class BeerMapper {
 
-	public BeerDTO convertFromEntityToDTO(Beer entity) {
+	public BeerDTO mapEntityToDTO(Beer entity) {
 		BeerDTO objDTO = new BeerDTO();
 		objDTO.setId(entity.getId());
 		objDTO.setName(entity.getName());
@@ -19,7 +19,7 @@ public class BeerAdapter {
 		return objDTO;
 	}
 	
-	public Beer convertFromDTOtoEntity(BeerDTO objDTO) {
+	public Beer mapDTOtoEntity(BeerDTO objDTO) {
 		Beer entity = new Beer();
 		entity.setId(objDTO.getId());
 		entity.setName(objDTO.getName());
