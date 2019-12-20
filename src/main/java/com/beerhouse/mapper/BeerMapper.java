@@ -13,7 +13,8 @@ public class BeerMapper {
 		objDTO.setId(entity.getId());
 		objDTO.setName(entity.getName());
 		objDTO.setCategory(entity.getCategory());
-		objDTO.setCategory(String.format("%.1f", entity.getAlcoholContent()) + "%");
+		objDTO.setIngredients(entity.getIngredients());
+		objDTO.setAlcoholContent(String.format("%.1f", entity.getAlcoholContent()) + "%");
 		objDTO.setPrice(entity.getPrice());
 		
 		return objDTO;
