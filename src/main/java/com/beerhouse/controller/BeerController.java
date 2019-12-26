@@ -27,7 +27,7 @@ public class BeerController {
 	@Autowired
 	private BeerService beerService;
 	
-	@PostMapping
+	@PostMapping(consumes = { "application/json" }, produces = { "application/json" })
 	public ResponseEntity<BeerDTO> create(@RequestBody BeerDTO beer) {
 		BeerDTO objDTO = this.beerService.create(beer);
 		objDTO.add(linkTo(methodOn(BeerController.class).findById(objDTO.getKey())).withSelfRel());
@@ -35,7 +35,8 @@ public class BeerController {
 		return ResponseEntity.ok().body(objDTO);
 	}
 	
-	@PutMapping
+	@PutMapping(consumes = { "application/json" }, 
+			produces = { "application/json" })
 	public ResponseEntity<BeerDTO> update(@RequestBody BeerDTO beer) {
 		BeerDTO objDTO = this.beerService.update(beer);
 		objDTO.add(linkTo(methodOn(BeerController.class).findById(objDTO.getKey())).withSelfRel());
@@ -43,7 +44,7 @@ public class BeerController {
 		return ResponseEntity.ok().body(objDTO);
 	}
 	
-	@GetMapping
+	@GetMapping(produces = { "application/json" })
 	public ResponseEntity<List<BeerDTO>> findAll() {
 		List<BeerDTO> listDTO = this.beerService.findAll();
 		listDTO.forEach(objDTO -> objDTO.add(linkTo(methodOn(BeerController.class).findById(objDTO.getKey())).withSelfRel()));
@@ -51,7 +52,7 @@ public class BeerController {
 		return ResponseEntity.ok().body(listDTO);
 	}
 	
-	@GetMapping(value = "/{beer-id}")
+	@GetMapping(value = "/{beer-id}", produces = { "application/json" })
 	public ResponseEntity<BeerDTO> findById(@PathVariable("beer-id") Long id) {
 		BeerDTO objDTO = this.beerService.findById(id);		
 		objDTO.add(linkTo(methodOn(BeerController.class).findById(objDTO.getKey())).withSelfRel());
