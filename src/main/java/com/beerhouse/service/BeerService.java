@@ -1,9 +1,10 @@
 package com.beerhouse.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.beerhouse.dto.BeerDTO;
@@ -69,9 +70,9 @@ public class BeerService {
 		return this.beerMapper.mapEntityToDTO(entity);
 	}
 	
-	public List<BeerDTO> findAll() {
-		List<Beer> entities = this.beerRepository.findAll();
-		List<BeerDTO> listDTO = entities.stream().map(entity -> this.beerMapper.mapEntityToDTO(entity)).collect(Collectors.toList());
+	public Page<BeerDTO> findAll(Pageable pageable) {
+		Page<Beer> entities = this.beerRepository.findAll(pageable);
+		Page<BeerDTO> listDTO = entities.map(this::convertToBeerDTO);
 		
 		return listDTO;
 	}
@@ -80,5 +81,9 @@ public class BeerService {
 		String alcoholContent = objDTO.getAlcoholContent().substring(0, objDTO.getAlcoholContent().length() - 1);
 		
 		return Float.valueOf(alcoholContent);
+	}
+	
+	private BeerDTO convertToBeerDTO(Beer entity) {
+		return this.beerMapper.mapEntityToDTO(entity);
 	}
 }
