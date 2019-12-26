@@ -1,8 +1,12 @@
 package com.beerhouse.controller;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +30,7 @@ public class BeerController {
 	@PostMapping
 	public ResponseEntity<BeerDTO> create(@RequestBody BeerDTO beer) {
 		BeerDTO objDTO = this.beerService.create(beer);
+		objDTO.add(linkTo(methodOn(BeerController.class).findById(objDTO.getKey())).withSelfRel());
 		
 		return ResponseEntity.ok().body(objDTO);
 	}
@@ -33,6 +38,7 @@ public class BeerController {
 	@PutMapping
 	public ResponseEntity<BeerDTO> update(@RequestBody BeerDTO beer) {
 		BeerDTO objDTO = this.beerService.update(beer);
+		objDTO.add(linkTo(methodOn(BeerController.class).findById(objDTO.getKey())).withSelfRel());
 		
 		return ResponseEntity.ok().body(objDTO);
 	}
@@ -40,6 +46,7 @@ public class BeerController {
 	@GetMapping
 	public ResponseEntity<List<BeerDTO>> findAll() {
 		List<BeerDTO> listDTO = this.beerService.findAll();
+		listDTO.forEach(objDTO -> objDTO.add(linkTo(methodOn(BeerController.class).findById(objDTO.getKey())).withSelfRel()));
 		
 		return ResponseEntity.ok().body(listDTO);
 	}
@@ -47,6 +54,7 @@ public class BeerController {
 	@GetMapping(value = "/{beer-id}")
 	public ResponseEntity<BeerDTO> findById(@PathVariable("beer-id") Long id) {
 		BeerDTO objDTO = this.beerService.findById(id);		
+		objDTO.add(linkTo(methodOn(BeerController.class).findById(objDTO.getKey())).withSelfRel());
 		
 		return ResponseEntity.ok().body(objDTO);
 	}

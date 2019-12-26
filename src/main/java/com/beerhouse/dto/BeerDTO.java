@@ -2,6 +2,11 @@ package com.beerhouse.dto;
 
 import java.io.Serializable;
 
+import org.springframework.hateoas.ResourceSupport;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,10 +14,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class BeerDTO implements Serializable {
+@JsonPropertyOrder({ "id", "name", "ingredients", "alcoholContent", "price", "category" })
+public class BeerDTO extends ResourceSupport implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
+	@JsonProperty("id")
+	private Long key;
 
 	private String name;
 

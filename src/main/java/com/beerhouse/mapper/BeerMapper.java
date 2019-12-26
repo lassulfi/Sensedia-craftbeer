@@ -10,7 +10,7 @@ public class BeerMapper {
 
 	public BeerDTO mapEntityToDTO(Beer entity) {
 		BeerDTO objDTO = new BeerDTO();
-		objDTO.setId(entity.getId());
+		objDTO.setKey(entity.getId());
 		objDTO.setName(entity.getName());
 		objDTO.setCategory(entity.getCategory());
 		objDTO.setIngredients(entity.getIngredients());
@@ -22,7 +22,7 @@ public class BeerMapper {
 	
 	public Beer mapDTOtoEntity(BeerDTO objDTO) {
 		Beer entity = new Beer();
-		entity.setId(objDTO.getId());
+		entity.setId(objDTO.getKey());
 		entity.setName(objDTO.getName());
 		entity.setCategory(objDTO.getCategory());
 		entity.setIngredients(objDTO.getIngredients());

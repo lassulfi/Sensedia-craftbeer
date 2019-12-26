@@ -33,10 +33,10 @@ public class BeerService {
 	}
 	
 	public BeerDTO update(BeerDTO objDTO) {
-		Beer entity = this.beerRepository.findById(objDTO.getId());
+		Beer entity = this.beerRepository.findById(objDTO.getKey());
 		if(entity == null)	{
-			log.error("No entity found for id: {}", objDTO.getId());
-			throw new ResourceNotFoundException("No resource found for id: " + objDTO.getId());
+			log.error("No entity found for id: {}", objDTO.getKey());
+			throw new ResourceNotFoundException("No resource found for id: " + objDTO.getKey());
 		}
 		entity.setName(objDTO.getName());
 		entity.setIngredients(objDTO.getIngredients());

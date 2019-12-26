@@ -113,7 +113,7 @@ public class BeerControllerTest {
 		
 	private BeerDTO getBeerData() {
 		BeerDTO objDTO = new BeerDTO();
-		objDTO.setId(ID);
+		objDTO.setKey(ID);
 		objDTO.setAlcoholContent(ALCOHOL_CONTENT);
 		objDTO.setName(NAME);
 		objDTO.setIngredients(INGREDIENTS);
