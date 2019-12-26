@@ -99,7 +99,26 @@ public class BeerControllerTest {
 		String response = this.mapper.writeValueAsString(this.getBeerData());
 		
 		mvc.perform(MockMvcRequestBuilders
-				.put(BEER_API_URL)
+				.put(BEER_API_URL + ID)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(response))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.id").value(ID))
+			.andExpect(jsonPath("$.name").value(NAME))
+			.andExpect(jsonPath("$.ingredients").value(INGREDIENTS))
+			.andExpect(jsonPath("$.alcoholContent").value(ALCOHOL_CONTENT))
+			.andExpect(jsonPath("$.price").value(PRICE))
+			.andExpect(jsonPath("$.category").value(CATEGORY));
+	}
+	
+	@Test
+	public void shouldPatchBeer() throws Exception {
+		BDDMockito.given(this.beerService.update(Mockito.any(BeerDTO.class))).willReturn(this.getBeerData());
+		
+		String response = this.mapper.writeValueAsString(this.getBeerData());
+		
+		mvc.perform(MockMvcRequestBuilders
+				.patch(BEER_API_URL + ID)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(response))
 			.andExpect(status().isOk())

@@ -10,6 +10,7 @@ import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -35,9 +36,10 @@ public class BeerController {
 		return ResponseEntity.ok().body(objDTO);
 	}
 	
-	@PutMapping(consumes = { "application/json" }, 
+	@PutMapping(value = "/{beer-id}", consumes = { "application/json" }, 
 			produces = { "application/json" })
-	public ResponseEntity<BeerDTO> update(@RequestBody BeerDTO beer) {
+	public ResponseEntity<BeerDTO> update(@PathVariable("beer-id") Long id, @RequestBody BeerDTO beer) {
+		beer.setKey(id);
 		BeerDTO objDTO = this.beerService.update(beer);
 		objDTO.add(linkTo(methodOn(BeerController.class).findById(objDTO.getKey())).withSelfRel());
 		
@@ -65,5 +67,16 @@ public class BeerController {
 		this.beerService.delete(id);
 		
 		return ResponseEntity.noContent().build();
+	}
+	
+	@PatchMapping(value = "/{beer-id}", consumes = { "application/json" }, 
+			produces = { "application/json" })
+	public ResponseEntity<BeerDTO> patch(@PathVariable("beer-id") Long id, @RequestBody BeerDTO beer) {
+		beer.setKey(id);
+		BeerDTO objDTO = this.beerService.update(beer);
+		objDTO.add(linkTo(methodOn(BeerController.class).findById(objDTO.getKey())).withSelfRel());
+		
+		return ResponseEntity.ok().body(objDTO);
+		
 	}
 }
