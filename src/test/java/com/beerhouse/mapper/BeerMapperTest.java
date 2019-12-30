@@ -8,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.beerhouse.dto.BeerDTO;
+import com.beerhouse.dto.BeerRequestDTO;
+import com.beerhouse.dto.BeerResponseDTO;
 import com.beerhouse.model.Beer;
 
 @RunWith(SpringRunner.class)
@@ -19,7 +20,7 @@ public class BeerMapperTest {
 	private BeerMapper mapper;
 	
 	@Test
-	public void shouldMapEntityToDTO() {
+	public void shouldMapResponseEntityToDTO() {
 		Beer entity = new Beer();
 		entity.setName("Bavaria");
 		entity.setCategory("Nacionais");
@@ -27,7 +28,7 @@ public class BeerMapperTest {
 		entity.setPrice(5.00f);
 		entity.setAlcoholContent(6.0f);
 		
-		BeerDTO objDTO = mapper.mapEntityToDTO(entity);
+		BeerResponseDTO objDTO = mapper.mapEntityToResponseDTO(entity);
 		
 		Assert.assertThat(objDTO.getName(), CoreMatchers.is("Bavaria"));
 		Assert.assertThat(objDTO.getCategory(), CoreMatchers.is("Nacionais"));
@@ -37,15 +38,15 @@ public class BeerMapperTest {
 	}
 	
 	@Test
-	public void shouldMapDTOtoEntity() {
-		BeerDTO objDTO = new BeerDTO();
+	public void shouldMapResquestDTOtoEntity() {
+		BeerRequestDTO objDTO = new BeerRequestDTO();
 		objDTO.setAlcoholContent("6.0%");
 		objDTO.setName("Bavaria");
 		objDTO.setCategory("Nacionais");
 		objDTO.setIngredients("Puro malte, água, cevada");
 		objDTO.setPrice(5.00f);
 		
-		Beer entity = mapper.mapDTOtoEntity(objDTO);
+		Beer entity = mapper.mapRequestDTOtoEntity(objDTO);
 		
 		Assert.assertThat(entity.getName(), CoreMatchers.is("Bavaria"));
 		Assert.assertThat(entity.getCategory(), CoreMatchers.is("Nacionais"));

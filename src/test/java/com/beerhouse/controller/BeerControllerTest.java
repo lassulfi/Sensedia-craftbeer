@@ -17,7 +17,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.beerhouse.dto.BeerDTO;
+import com.beerhouse.dto.BeerRequestDTO;
+import com.beerhouse.dto.BeerResponseDTO;
 import com.beerhouse.exceptions.ResourceNotFoundException;
 import com.beerhouse.repository.BeerRepository;
 import com.beerhouse.service.BeerService;
@@ -75,7 +76,7 @@ public class BeerControllerTest {
 	
 	@Test
 	public void shouldCreateBeer() throws Exception {
-		BDDMockito.given(this.beerService.create(Mockito.any(BeerDTO.class))).willReturn(this.getBeerData());
+		BDDMockito.given(this.beerService.create(Mockito.any(BeerRequestDTO.class))).willReturn(this.getBeerData());
 		
 		String response = this.mapper.writeValueAsString(this.getBeerData());
 		
@@ -94,7 +95,7 @@ public class BeerControllerTest {
 	
 	@Test
 	public void shouldUpdateBeer() throws Exception {
-		BDDMockito.given(this.beerService.update(Mockito.any(BeerDTO.class))).willReturn(this.getBeerData());
+		BDDMockito.given(this.beerService.update(Mockito.any(BeerRequestDTO.class))).willReturn(this.getBeerData());
 		
 		String response = this.mapper.writeValueAsString(this.getBeerData());
 		
@@ -113,7 +114,7 @@ public class BeerControllerTest {
 	
 	@Test
 	public void shouldPatchBeer() throws Exception {
-		BDDMockito.given(this.beerService.update(Mockito.any(BeerDTO.class))).willReturn(this.getBeerData());
+		BDDMockito.given(this.beerService.update(Mockito.any(BeerRequestDTO.class))).willReturn(this.getBeerData());
 		
 		String response = this.mapper.writeValueAsString(this.getBeerData());
 		
@@ -130,8 +131,8 @@ public class BeerControllerTest {
 			.andExpect(jsonPath("$.category").value(CATEGORY));
 	}
 		
-	private BeerDTO getBeerData() {
-		BeerDTO objDTO = new BeerDTO();
+	private BeerResponseDTO getBeerData() {
+		BeerResponseDTO objDTO = new BeerResponseDTO();
 		objDTO.setKey(ID);
 		objDTO.setAlcoholContent(ALCOHOL_CONTENT);
 		objDTO.setName(NAME);

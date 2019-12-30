@@ -25,9 +25,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.beerhouse.dto.BeerDTO;
+import com.beerhouse.dto.BeerRequestDTO;
+import com.beerhouse.dto.BeerResponseDTO;
 import com.beerhouse.service.BeerService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(value = "Beers endpoint", description = "Beers resource endpoint", tags = { "Beers" })
 @RestController
 @RequestMapping("/api/beers/v1")
 public class BeerController {
@@ -36,26 +41,29 @@ public class BeerController {
 	private BeerService beerService;
 	
 	@Autowired
-	private PagedResourcesAssembler<BeerDTO> assembler;
+	private PagedResourcesAssembler<BeerResponseDTO> assembler;
 	
+	@ApiOperation(value = "Creates a beer entity")
 	@PostMapping(consumes = { "application/json" }, produces = { "application/json" })
-	public ResponseEntity<BeerDTO> create(@RequestBody BeerDTO beer) {
-		BeerDTO objDTO = this.beerService.create(beer);
+	public ResponseEntity<BeerResponseDTO> create(@RequestBody BeerRequestDTO beer) {
+		BeerResponseDTO objDTO = this.beerService.create(beer);
 		objDTO.add(linkTo(methodOn(BeerController.class).findById(objDTO.getKey())).withSelfRel());
 		
 		return ResponseEntity.ok().body(objDTO);
 	}
 	
+	@ApiOperation(value = "Updates an existing beer entity")
 	@PutMapping(value = "/{beer-id}", consumes = { "application/json" }, 
 			produces = { "application/json" })
-	public ResponseEntity<BeerDTO> update(@PathVariable("beer-id") Long id, @RequestBody BeerDTO beer) {
-		beer.setKey(id);
-		BeerDTO objDTO = this.beerService.update(beer);
+	public ResponseEntity<BeerResponseDTO> update(@PathVariable("beer-id") Long id, @RequestBody BeerRequestDTO beer) {
+		beer.setId(id);
+		BeerResponseDTO objDTO = this.beerService.update(beer);
 		objDTO.add(linkTo(methodOn(BeerController.class).findById(objDTO.getKey())).withSelfRel());
 		
 		return ResponseEntity.ok().body(objDTO);
 	}
 	
+	@ApiOperation(value = "Returns a list of all beers")
 	@GetMapping(produces = { "application/json" })
 	public ResponseEntity<?> findAll(@RequestParam(value = "page", defaultValue = "0") int page, 
 			@RequestParam(value = "limit", defaultValue = "12") int limit,
@@ -65,7 +73,7 @@ public class BeerController {
 		
 		Pageable pageable = new PageRequest(page, limit, sortDirection, "name");
 		
-		Page<BeerDTO> beers = this.beerService.findAll(pageable);
+		Page<BeerResponseDTO> beers = this.beerService.findAll(pageable);
 		beers.forEach(objDTO -> objDTO.add(linkTo(methodOn(BeerController.class).findById(objDTO.getKey())).withSelfRel()));
 		
 		PagedResources<?> resources = assembler.toResource(beers);
@@ -73,14 +81,16 @@ public class BeerController {
 		return new ResponseEntity<>(resources, HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "Returns a beer by id")
 	@GetMapping(value = "/{beer-id}", produces = { "application/json" })
-	public ResponseEntity<BeerDTO> findById(@PathVariable("beer-id") Long id) {
-		BeerDTO objDTO = this.beerService.findById(id);		
+	public ResponseEntity<BeerResponseDTO> findById(@PathVariable("beer-id") Long id) {
+		BeerResponseDTO objDTO = this.beerService.findById(id);		
 		objDTO.add(linkTo(methodOn(BeerController.class).findById(objDTO.getKey())).withSelfRel());
 		
 		return ResponseEntity.ok().body(objDTO);
 	}
 	
+	@ApiOperation(value = "Deletes a beer by id")
 	@DeleteMapping(value = "/{beer-id}")
 	public ResponseEntity<Void> delete(@PathVariable("beer-id") Long id) {
 		this.beerService.delete(id);
@@ -88,11 +98,12 @@ public class BeerController {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@ApiOperation(value = "Executes a partial update on an existing beer")
 	@PatchMapping(value = "/{beer-id}", consumes = { "application/json" }, 
 			produces = { "application/json" })
-	public ResponseEntity<BeerDTO> patch(@PathVariable("beer-id") Long id, @RequestBody BeerDTO beer) {
-		beer.setKey(id);
-		BeerDTO objDTO = this.beerService.update(beer);
+	public ResponseEntity<BeerResponseDTO> patch(@PathVariable("beer-id") Long id, @RequestBody BeerRequestDTO beer) {
+		beer.setId(id);
+		BeerResponseDTO objDTO = this.beerService.update(beer);
 		objDTO.add(linkTo(methodOn(BeerController.class).findById(objDTO.getKey())).withSelfRel());
 		
 		return ResponseEntity.ok().body(objDTO);

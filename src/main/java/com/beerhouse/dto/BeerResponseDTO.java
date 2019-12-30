@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.springframework.hateoas.ResourceSupport;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -15,7 +16,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonPropertyOrder({ "id", "name", "ingredients", "alcoholContent", "price", "category" })
-public class BeerDTO extends ResourceSupport implements Serializable {
+@JsonIgnoreProperties({ "links" })
+public class BeerResponseDTO extends ResourceSupport implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@JsonProperty("id")

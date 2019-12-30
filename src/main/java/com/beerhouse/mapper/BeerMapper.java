@@ -2,14 +2,15 @@ package com.beerhouse.mapper;
 
 import org.springframework.stereotype.Service;
 
-import com.beerhouse.dto.BeerDTO;
+import com.beerhouse.dto.BeerRequestDTO;
+import com.beerhouse.dto.BeerResponseDTO;
 import com.beerhouse.model.Beer;
 
 @Service
 public class BeerMapper {
 
-	public BeerDTO mapEntityToDTO(Beer entity) {
-		BeerDTO objDTO = new BeerDTO();
+	public BeerResponseDTO mapEntityToResponseDTO(Beer entity) {
+		BeerResponseDTO objDTO = new BeerResponseDTO();
 		objDTO.setKey(entity.getId());
 		objDTO.setName(entity.getName());
 		objDTO.setCategory(entity.getCategory());
@@ -20,9 +21,9 @@ public class BeerMapper {
 		return objDTO;
 	}
 	
-	public Beer mapDTOtoEntity(BeerDTO objDTO) {
+	public Beer mapRequestDTOtoEntity(BeerRequestDTO objDTO) {
 		Beer entity = new Beer();
-		entity.setId(objDTO.getKey());
+		entity.setId(objDTO.getId());
 		entity.setName(objDTO.getName());
 		entity.setCategory(objDTO.getCategory());
 		entity.setIngredients(objDTO.getIngredients());

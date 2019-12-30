@@ -15,7 +15,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.beerhouse.dto.BeerDTO;
+import com.beerhouse.dto.BeerRequestDTO;
+import com.beerhouse.dto.BeerResponseDTO;
 import com.beerhouse.exceptions.ResourceNotFoundException;
 import com.beerhouse.mapper.BeerMapper;
 import com.beerhouse.model.Beer;
@@ -44,19 +45,19 @@ public class BeerServiceTest {
 		BDDMockito.given(this.beerRepository.findById(Mockito.anyLong())).willReturn(new Beer());
 		BDDMockito.given(this.beerRepository.findById(Mockito.eq(0L))).willThrow(new ResourceNotFoundException("No resource found for id: 0"));
 		BDDMockito.given(this.beerRepository.save(Mockito.any(Beer.class))).willReturn(new Beer());
-		BDDMockito.given(this.beerMapper.mapEntityToDTO(Mockito.any(Beer.class))).willReturn(new BeerDTO());
+		BDDMockito.given(this.beerMapper.mapEntityToResponseDTO(Mockito.any(Beer.class))).willReturn(new BeerResponseDTO());
 	}
 	
 	@Test
 	public void mustFindBeerById() {
-		BeerDTO objDTO = this.beerService.findById(1L);
+		BeerResponseDTO objDTO = this.beerService.findById(1L);
 		
 		assertNotNull(objDTO);
 	}
 	
 	@Test
 	public void mustPersistBeer() {
-		BeerDTO objDTO = this.beerService.create(new BeerDTO());
+		BeerResponseDTO objDTO = this.beerService.create(new BeerRequestDTO());
 	
 		assertNotNull(objDTO);
 	}
@@ -66,7 +67,7 @@ public class BeerServiceTest {
 		exception.expect(ResourceNotFoundException.class);
 		exception.expectMessage("No resource found for id: 0");
 		
-		BeerDTO objDTO = this.beerService.findById(0L);
+		BeerResponseDTO objDTO = this.beerService.findById(0L);
 		
 	}
 }
