@@ -1,3 +1,7 @@
+server:
+  port: 9001
+  context-path: /beerhouse
+
 spring:
   h2:
     console:
@@ -11,3 +15,12 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        ddl-auto: update
+
+flyway:
+  url: jdbc:h2:mem:craftbeer
+  schemas:
+  - craftbeer
+  user: sa
+  password: 
